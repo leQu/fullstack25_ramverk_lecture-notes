@@ -83,6 +83,17 @@ export class UserProfile extends Component {
 
 export class SimpleButton extends Component {
   render() {
-    return <button onClick={this.props.onClick}>{this.props.text}</button>;
+    return (
+      <button
+        style={
+          this.props.styleType === "primary"
+            ? { backgroundColor: "blue", color: "white" }
+            : { backgroundColor: "gray", color: "black" }
+        }
+        onClick={this.props.onClick}
+      >
+        {this.props.text}
+      </button>
+    );
   }
 }

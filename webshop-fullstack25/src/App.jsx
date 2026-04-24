@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Icon from "./assets/react.svg";
+import useCounter from "./hooks/useCounter.js";
 import "./App.css";
 import {
   Counter,
@@ -16,18 +16,17 @@ function App() {
   return (
     <>
       <Lesson4 />
+      ;
       <Lecture4
         lectureData={{ count: 4, title: "Lecture 4" }}
         bio="Blabla"
         callbackFunction={() => console.log("Ruinning, NOT walking")}
       />
       <Lecture4 lectureData={{ count: 5, title: "Lecture 5" }} bio="Blabla" />
-
       <Lecture4Wrapper>
         <p>Det här är innehållet för Lecture 4</p>
         <Counter />
       </Lecture4Wrapper>
-
       {/* Lecture 3 Components*/}
       <Counter title="Min räknare" initialCount={10} />
       {count < 10 && <Timer />}
@@ -39,6 +38,7 @@ function App() {
       />
       <div className="card">
         <SimpleButton
+          styleType="primary"
           onClick={() => setCount((count) => count + 1)}
           text={`count is ${count}`}
         />
@@ -49,16 +49,29 @@ function App() {
 
 export default App;
 
+function AnotherCounterComponent(initialCount) {
+  const [count, increment, decrement, reset] = useCounter(initialCount);
+  return (
+    <div>
+      <h1>Another Counter Component</h1>
+      <p>Initial Count: {count}</p>
+      <button onClick={increment}>Increment</button>
+      <button onClick={decrement}>Decrement</button>
+      <button onClick={reset}>Reset</button>
+    </div>
+  );
+}
+
 function handleClick(message, event) {
   console.log(`Knappen klickades!, eventet är: `, event);
 }
 
-function handleHandleClick(event) {
-  handleClick("Knappen klickades!", event);
-}
-
 function MyComponent() {
-  return <button onClick={handleHandleClick}>Klicka mig</button>;
+  return (
+    <button onClick={(event) => handleClick("Knappen klickades!", event)}>
+      Klicka mig
+    </button>
+  );
 }
 
 function KomplettKomponent(name, age, stuffInMyComponent) {
@@ -126,5 +139,38 @@ function AboutPage() {
     <RamKomponent>
       <App3 />
     </RamKomponent>
+  );
+}
+
+function ItemList({ isPrimary = false }) {
+  const items = [
+    { name: "Item 1", price: 10 },
+    { name: "Item 2", price: 20 },
+    { name: "Item 3", price: 30 },
+  ];
+
+  return (
+    <ul
+      className={`flex flex-col gap-4 bg-white hover:bg-gray-100 hover:scale-110 ${isPrimary ? "bg-blue-500 text-white" : "bg-white text-gray-800"}`}
+    >
+      {items.map((item, index) => (
+        <Item key={index} name={item.name} price={item.price} />
+      ))}
+    </ul>
+  );
+}
+
+function Item({ name, price }) {
+  return (
+    <div>
+      <h3>{name}</h3>
+      <p>Price: {price}</p>
+    </div>
+  );
+}
+
+function Button({ primary }) {
+  return (
+    <button className={primary ? "primary" : "secondary"}>Klicka här</button>
   );
 }
