@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
-import MainNavigation from "../components/MainNavigation";
-import ProductList from "../components/ProductList";
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-export default function Home() {
+export default function ProductList() {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     const fetchProducts = async () => {
@@ -17,10 +16,15 @@ export default function Home() {
     };
     fetchProducts();
   }, []);
+
   return (
-    <div>
-      <MainNavigation />
-      <ProductList products={products} />
-    </div>
+    <ul>
+      {products.map((product) => (
+        <li key={product.id}>
+          {product.title}
+          <Link to={`/item/${product.id}`}>View Details</Link>
+        </li>
+      ))}
+    </ul>
   );
 }
